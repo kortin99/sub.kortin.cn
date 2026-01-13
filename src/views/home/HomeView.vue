@@ -26,6 +26,10 @@ export default {
 </script>
 
 <style scoped>
+section {
+  height: calc(100vh - 54px);
+}
+
 .light-style .landing-hero {
   background: linear-gradient(338.18deg, #fafaff 0%, #ececec 94.44%);
 }

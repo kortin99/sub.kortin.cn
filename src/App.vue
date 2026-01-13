@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view />
-    <dialog-view v-if="$store.state.app.dialog.active"></dialog-view>
+    <dialog-view></dialog-view>
   </div>
 </template>
 

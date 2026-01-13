@@ -1,10 +1,10 @@
 window.config = {
   // 网站标题
-  siteName: 'Subconverter Web',
+  siteName: `kortin's 订阅转换`,
   // API 地址
   apiUrl: 'http://127.0.0.1:25500',
   // 短域名服务地址
-  shortUrl: 'https://s.ops.ci',
+  shortUrl: 'https://s.kortin.cn',
   // 首页菜单
   menuItem: [
     {
@@ -14,7 +14,7 @@ window.config = {
     },
     {
       title: 'GitHub',
-      link: 'https://github.com/stilleshan/subweb',
+      link: 'https://github.com/kortin99/sub.kortin.cn',
       target: '_blank',
     },
   ],

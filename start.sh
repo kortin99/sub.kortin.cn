@@ -8,12 +8,12 @@ if [ $API_URL ]; then
   sed -i "s#http://127.0.0.1:25500#$API_URL#g" /usr/share/nginx/html/conf/config.js
 else
   echo "当前为默认本地 API 地址: http://127.0.0.1:25500"
-  echo "如需修改请在容器启动时使用 -e API_URL='https://sub.ops.ci' 传递环境变量"
+  echo "如需修改请在容器启动时使用 -e API_URL='https://sub.kortin.cn' 传递环境变量"
 fi
 
 if [ $SHORT_URL ]; then
   echo "当前短链接地址为: $SHORT_URL"
-  sed -i "s#https://s.ops.ci#$SHORT_URL#g" /usr/share/nginx/html/conf/config.js
+  sed -i "s#https://s.kortin.cn#$SHORT_URL#g" /usr/share/nginx/html/conf/config.js
 fi
 
 if [ $SITE_NAME ]; then

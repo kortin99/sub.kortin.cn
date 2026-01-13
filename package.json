@@ -8,14 +8,14 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^1.5.0",
-    "core-js": "^3.8.3",
-    "element-plus": "^2.3.14",
-    "moment": "^2.29.4",
-    "perfect-scrollbar": "^1.5.5",
-    "vue": "^3.2.13",
-    "vue-router": "^4.0.3",
-    "vuex": "^4.0.0"
+    "axios": "^1.13.2",
+    "core-js": "^3.47.0",
+    "element-plus": "^2.13.1",
+    "moment": "^2.30.1",
+    "perfect-scrollbar": "^1.5.6",
+    "vue": "^3.5.26",
+    "vue-router": "^4.6.4",
+    "vuex": "^4.1.0 "
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
