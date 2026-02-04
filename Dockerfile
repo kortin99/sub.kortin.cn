@@ -16,6 +16,6 @@ RUN cd /app && npm install && npm run build
 FROM nginx:1.16-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY --from=build /subconverter /base
-COPY . /app
+COPY --from=build /app/start.sh /app/start.sh
 EXPOSE 80
 CMD [ "sh", "-c", "/app/start.sh" ]
