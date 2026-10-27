@@ -1,0 +1,16 @@
+src/components/backgrounds/PatternBackground.vue
+  h_eb5efd47d34bf9 55
+src/layouts/main/MainLayout.vue
+  h_eb5efd47d34bf9 9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "0ba90aa50fc459f8141721508e3cb008d87b0fbe",
+  "prompts": {},
+  "humans": {
+    "h_eb5efd47d34bf9": {
+      "author": "kortin.zhou <hi@kortin.cn>"
+    }
+  }
+}
