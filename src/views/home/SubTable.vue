@@ -11,7 +11,7 @@ import type { ConversionHistoryRecord } from '@/composables/useConversionHistory
 
 const {
   state, targetOptions, regionOptions, apiOptions, remoteOptions, placeholder,
-  isMoreConfigOpen, isShortLinkLoading, handleApiChange, handleRemoteChange,
+  isMoreConfigOpen, isShortLinkLoading, copiedUrl, handleApiChange, handleRemoteChange,
   handleGetSubUrl, handleGetShortUrl, copyToClipboard,
   historyLimit, historyRecords, isHistoryEnabled, enableHistory,
   restoreHistory, removeHistoryRecord, clearHistory,
@@ -92,7 +92,7 @@ const handleRestoreHistory = async (record: ConversionHistoryRecord) => {
       </section>
     </div>
     <AdvancedOptions v-if="isMoreConfigOpen" v-model="state.moreConfig" :region-options="regionOptions" />
-    <ConversionResults :sub-url="state.result.subUrl" :short-url="state.result.shortUrl" :loading="isShortLinkLoading" @convert="handleGetSubUrl" @shorten="handleGetShortUrl" @copy="copyToClipboard" />
+    <ConversionResults :sub-url="state.result.subUrl" :short-url="state.result.shortUrl" :copied-url="copiedUrl" :loading="isShortLinkLoading" @convert="handleGetSubUrl" @shorten="handleGetShortUrl" @copy="copyToClipboard" />
   </NForm>
 
   <NDrawer v-model:show="isHistoryOpen" class="history-drawer" placement="right" :width="historyDrawerWidth">
@@ -111,6 +111,7 @@ const handleRestoreHistory = async (record: ConversionHistoryRecord) => {
         :records="historyRecords"
         :target-options="targetOptions"
         :enabled="isHistoryEnabled"
+        :copied-url="copiedUrl"
         @enable="enableHistory"
         @restore="handleRestoreHistory"
         @copy="copyToClipboard"
@@ -164,7 +165,7 @@ const handleRestoreHistory = async (record: ConversionHistoryRecord) => {
   border: 1px solid rgba(205,228,221,.15);
   border-radius: 18px !important;
   background:
-    radial-gradient(ellipse 90% 260px at 50% 0, rgba(255,255,255,.04), transparent 78%),
+    radial-gradient(ellipse 150% 520px at calc(572px - 50vw) -40px, rgba(183,216,206,.06), transparent 74%),
     linear-gradient(150deg, rgba(45,74,67,.92), rgba(15,26,23,.95) 52%, rgba(5,11,9,.97)) !important;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.12),
@@ -203,5 +204,12 @@ const handleRestoreHistory = async (record: ConversionHistoryRecord) => {
   :global(.history-drawer) { top: 6px !important; bottom: 6px !important; margin-right: 6px; border-radius: 15px !important; }
   .history-drawer-content :deep(.n-drawer-body-content-wrapper) { padding: 16px 18px 20px; }
   .history-drawer-content :deep(.n-drawer-header) { padding: 19px 18px 16px; }
+}
+@media (max-width: 583px) {
+  :global(.history-drawer) {
+    background:
+      radial-gradient(ellipse 90% 260px at 50% 0, rgba(183,216,206,.055), transparent 78%),
+      linear-gradient(150deg, rgba(45,74,67,.92), rgba(15,26,23,.95) 52%, rgba(5,11,9,.97)) !important;
+  }
 }
 </style>

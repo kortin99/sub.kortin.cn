@@ -2,12 +2,16 @@
 import { NButton, NInput } from 'naive-ui'
 import AppIcon from '@/components/AppIcon.vue'
 
-defineProps<{ subUrl: string; shortUrl: string; loading: boolean }>()
+const props = defineProps<{ subUrl: string; shortUrl: string; copiedUrl: string; loading: boolean }>()
 const emit = defineEmits<{
   convert: []
   shorten: []
   copy: [url: string, title: string]
 }>()
+
+function isCopied(url: string) {
+  return Boolean(url) && props.copiedUrl === url
+}
 </script>
 
 <template>
@@ -20,7 +24,17 @@ const emit = defineEmits<{
       <label class="result-label" for="subscription-result">订阅链接</label>
       <NInput :value="subUrl" :input-props="{ id: 'subscription-result' }" readonly placeholder="转换后的订阅链接将显示在这里">
         <template #suffix>
-          <button class="copy-button" type="button" :disabled="!subUrl" aria-label="复制订阅链接" title="复制订阅链接" @click="emit('copy', subUrl, '订阅链接')"><AppIcon name="copy" /></button>
+          <button
+            class="copy-button"
+            :class="{ 'copy-button--copied': isCopied(subUrl) }"
+            type="button"
+            :disabled="!subUrl"
+            :aria-label="isCopied(subUrl) ? '订阅链接已复制' : '复制订阅链接'"
+            :title="isCopied(subUrl) ? '已复制' : '复制订阅链接'"
+            @click="emit('copy', subUrl, '订阅链接')"
+          >
+            <AppIcon :name="isCopied(subUrl) ? 'check' : 'copy'" />
+          </button>
         </template>
       </NInput>
       <NButton type="primary" class="generate-button" @click="emit('convert')">转换并复制 <AppIcon class="button-arrow" name="arrow" /></NButton>
@@ -29,7 +43,17 @@ const emit = defineEmits<{
       <label class="result-label" for="short-result">短链接</label>
       <NInput :value="shortUrl" :input-props="{ id: 'short-result' }" readonly placeholder="生成更短的链接，便于导入和分享">
         <template #suffix>
-          <button class="copy-button" type="button" :disabled="!shortUrl" aria-label="复制短链接" title="复制短链接" @click="emit('copy', shortUrl, '短链接')"><AppIcon name="copy" /></button>
+          <button
+            class="copy-button"
+            :class="{ 'copy-button--copied': isCopied(shortUrl) }"
+            type="button"
+            :disabled="!shortUrl"
+            :aria-label="isCopied(shortUrl) ? '短链接已复制' : '复制短链接'"
+            :title="isCopied(shortUrl) ? '已复制' : '复制短链接'"
+            @click="emit('copy', shortUrl, '短链接')"
+          >
+            <AppIcon :name="isCopied(shortUrl) ? 'check' : 'copy'" />
+          </button>
         </template>
       </NInput>
       <NButton :loading="loading" :disabled="loading" @click="emit('shorten')">生成短链</NButton>
@@ -44,8 +68,9 @@ const emit = defineEmits<{
 .results-heading span { color: var(--text-muted); font-size: 12px; }
 .result-row { display: grid; grid-template-columns: 64px minmax(0, 1fr) 154px; align-items: center; gap: 16px; margin-top: 12px; }
 .result-label { color: var(--text-secondary); font-size: 13px; }
-.copy-button { display: grid; place-items: center; width: 32px; height: 32px; margin-right: -6px; border: 0; border-radius: 6px; color: var(--text-secondary); background: transparent; cursor: pointer; }
+.copy-button { display: grid; place-items: center; width: 32px; height: 32px; margin-right: -6px; border: 0; border-radius: 6px; color: var(--text-secondary); background: transparent; cursor: pointer; transition: color 160ms ease, background 160ms ease; }
 .copy-button:not(:disabled):hover { color: var(--text-primary); background: rgba(255,255,255,.08); }
+.copy-button--copied, .copy-button--copied:not(:disabled):hover { color: #b9dbd0; background: rgba(142,194,177,.1); }
 .copy-button:disabled { opacity: .35; cursor: not-allowed; }
 .copy-button .app-icon { width: 16px; height: 16px; }
 .button-arrow { width: 17px; margin-left: 16px; }

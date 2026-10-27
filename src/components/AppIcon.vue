@@ -1,10 +1,11 @@
 <script setup lang="ts">
-defineProps<{ name: 'link' | 'arrow' | 'copy' | 'settings' | 'shield' | 'chevron' | 'menu' | 'history' | 'trash' }>()
+defineProps<{ name: 'link' | 'arrow' | 'copy' | 'check' | 'settings' | 'shield' | 'chevron' | 'menu' | 'history' | 'trash' }>()
 
 const paths = {
   link: 'M10 13a5 5 0 0 0 7 .1l3-3a5 5 0 0 0-7-7l-2 2 M14 11a5 5 0 0 0-7-.1l-3 3a5 5 0 0 0 7 7l2-2',
   arrow: 'M5 12h14 M13 6l6 6-6 6',
   copy: 'M9 9h11v11H9z M15 5V3H3v12h2',
+  check: 'M5 12l4 4L19 6',
   settings: 'M4 7h6m4 0h6M4 17h10m4 0h2 M10 4v6 M14 14v6',
   shield: 'M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6z M8 12l3 3 5-6',
   chevron: 'M6 9l6 6 6-6',

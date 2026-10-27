@@ -9,6 +9,7 @@ const props = defineProps<{
   records: readonly ConversionHistoryRecord[]
   targetOptions: readonly TargetOption[]
   enabled: boolean
+  copiedUrl: string
 }>()
 
 const emit = defineEmits<{
@@ -122,11 +123,14 @@ function sourceCount(source: string) {
 function abbreviateLink(link: string) {
   return link.length > 92 ? `${link.slice(0, 92)}…` : link
 }
+
+function isCopied(url: string) {
+  return Boolean(url) && props.copiedUrl === url
+}
 </script>
 
 <template>
   <section class="history-content" aria-label="历史记录">
-    <p class="history-note">历史记录只保存在当前浏览器本地，不会上传到服务器。其中可能包含订阅密钥，请勿在公用设备上使用。如果这不是你的私人设备，使用后请及时清理。</p>
 
     <div v-if="!enabled" class="history-gate">
       <span class="history-gate-icon"><AppIcon name="shield" /></span>
@@ -184,15 +188,27 @@ function abbreviateLink(link: string) {
                     <div class="record-link">
                       <span class="link-label">订阅</span>
                       <code :title="record.subUrl">{{ abbreviateLink(record.subUrl) }}</code>
-                      <button type="button" aria-label="复制历史订阅链接" title="复制订阅链接" @click="emit('copy', record.subUrl, '订阅链接')">
-                        <AppIcon name="copy" />
+                      <button
+                        type="button"
+                        :class="{ 'record-copy--copied': isCopied(record.subUrl) }"
+                        :aria-label="isCopied(record.subUrl) ? '历史订阅链接已复制' : '复制历史订阅链接'"
+                        :title="isCopied(record.subUrl) ? '已复制' : '复制订阅链接'"
+                        @click="emit('copy', record.subUrl, '订阅链接')"
+                      >
+                        <AppIcon :name="isCopied(record.subUrl) ? 'check' : 'copy'" />
                       </button>
                     </div>
                     <div v-if="record.shortUrl" class="record-link">
                       <span class="link-label">短链</span>
                       <code :title="record.shortUrl">{{ abbreviateLink(record.shortUrl) }}</code>
-                      <button type="button" aria-label="复制历史短链接" title="复制短链接" @click="emit('copy', record.shortUrl, '短链接')">
-                        <AppIcon name="copy" />
+                      <button
+                        type="button"
+                        :class="{ 'record-copy--copied': isCopied(record.shortUrl) }"
+                        :aria-label="isCopied(record.shortUrl) ? '历史短链接已复制' : '复制历史短链接'"
+                        :title="isCopied(record.shortUrl) ? '已复制' : '复制短链接'"
+                        @click="emit('copy', record.shortUrl, '短链接')"
+                      >
+                        <AppIcon :name="isCopied(record.shortUrl) ? 'check' : 'copy'" />
                       </button>
                     </div>
                   </div>
@@ -211,6 +227,7 @@ function abbreviateLink(link: string) {
         </div>
       </template>
 
+      <p class="history-note">历史记录只保存在当前浏览器本地，不会上传到服务器。其中可能包含订阅密钥，请勿在公用设备上使用。如果这不是你的私人设备，使用后请及时清理。</p>
     </template>
   </section>
 </template>
@@ -319,15 +336,16 @@ function abbreviateLink(link: string) {
 .record-link { display: grid; grid-template-columns: 30px minmax(0, 1fr) 28px; align-items: center; gap: 7px; min-width: 0; padding: 5px 6px 5px 9px; border: 1px solid rgba(205,228,221,.075); border-radius: 7px; background: rgba(2,7,6,.2); box-shadow: inset 0 1px 0 rgba(255,255,255,.025); }
 .link-label { color: var(--text-muted); font-size: 10px; }
 .record-link code { overflow: hidden; color: #aebbb7; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
-.record-link button { display: grid; place-items: center; width: 28px; height: 28px; border: 0; border-radius: 5px; color: var(--text-muted); background: transparent; cursor: pointer; }
+.record-link button { display: grid; place-items: center; width: 28px; height: 28px; border: 0; border-radius: 5px; color: var(--text-muted); background: transparent; cursor: pointer; transition: color 160ms ease, background 160ms ease; }
 .record-link button:hover { color: var(--text-primary); background: rgba(255,255,255,.06); }
+.record-link button.record-copy--copied, .record-link button.record-copy--copied:hover { color: #b9dbd0; background: rgba(142,194,177,.1); }
 .record-link .app-icon { width: 14px; height: 14px; }
 .record-footer { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 12px; }
 .record-footer > span { color: var(--text-muted); font-size: 11px; }
 .restore-button { display: inline-flex; align-items: center; gap: 7px; min-height: 31px; padding: 0 11px; border: 1px solid rgba(205,228,221,.17); border-radius: 7px; color: var(--text-secondary); background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.025)); box-shadow: inset 0 1px 0 rgba(255,255,255,.055); cursor: pointer; font-size: 12px; }
 .restore-button:hover { color: var(--text-primary); border-color: rgba(205,228,221,.28); background: rgba(255,255,255,.065); }
 .restore-button .app-icon { width: 14px; height: 14px; }
-.history-note { margin: 0 0 18px 0; padding-bottom: 14px; border-bottom: 1px solid rgba(205,228,221,.08); color: var(--text-muted); font-size: 11px; line-height: 1.7; }
+.history-note { margin: 0; margin-top: 18px; padding-top: 14px; color: var(--text-muted); font-size: 11px; line-height: 1.7; }
 @media (max-width: 600px) {
   .history-gate { grid-template-columns: 34px minmax(0, 1fr); gap: 13px 11px; padding: 16px; }
   .history-gate-icon { width: 34px; height: 34px; }

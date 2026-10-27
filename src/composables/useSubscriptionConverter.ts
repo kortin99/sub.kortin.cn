@@ -1,4 +1,4 @@
-import { reactive, readonly, shallowRef } from 'vue'
+import { onScopeDispose, reactive, readonly, shallowRef } from 'vue'
 import type { SelectOption } from 'naive-ui'
 import { request } from '@/network'
 import type { ClientIconName } from '@/components/converter/clientIcons'
@@ -13,6 +13,8 @@ interface ShortLinkResponse {
   Code?: number
   ShortUrl?: string
 }
+
+const COPY_FEEDBACK_DURATION = 3000
 
 export interface TargetOption extends SelectOption {
   icon: ClientIconName
@@ -148,6 +150,24 @@ export function useSubscriptionConverter() {
 
   const isMoreConfigOpen = shallowRef(false)
   const isShortLinkLoading = shallowRef(false)
+  const copiedUrl = shallowRef('')
+  let copyFeedbackTimer: ReturnType<typeof setTimeout> | undefined
+
+  const clearCopyFeedback = () => {
+    if (copyFeedbackTimer) {
+      clearTimeout(copyFeedbackTimer)
+      copyFeedbackTimer = undefined
+    }
+    copiedUrl.value = ''
+  }
+
+  const showCopyFeedback = (url: string) => {
+    clearCopyFeedback()
+    copiedUrl.value = url
+    copyFeedbackTimer = setTimeout(clearCopyFeedback, COPY_FEEDBACK_DURATION)
+  }
+
+  onScopeDispose(clearCopyFeedback)
 
   const handleApiChange = (value: string) => {
     state.apiSelection = value
@@ -216,11 +236,13 @@ export function useSubscriptionConverter() {
     )
   }
 
-  const copyToClipboard = async (url: string, title: string) => {
+  const copyToClipboard = async (url: string, title: string): Promise<boolean> => {
     if (!url) {
       showDialog('warning', '无法复制', '请先生成链接。')
-      return
+      return false
     }
+
+    clearCopyFeedback()
 
     try {
       if (navigator.clipboard) {
@@ -236,9 +258,12 @@ export function useSubscriptionConverter() {
           copyInput.remove()
         }
       }
+      showCopyFeedback(url)
       showNotification(`${title}已复制`)
+      return true
     } catch {
       showDialog('warning', '复制失败', '当前浏览器不支持自动复制，请手动复制链接。')
+      return false
     }
   }
 
@@ -311,7 +336,7 @@ export function useSubscriptionConverter() {
 
   return {
     state, targetOptions, regionOptions, apiOptions, remoteOptions, placeholder,
-    isMoreConfigOpen, isShortLinkLoading: readonly(isShortLinkLoading),
+    isMoreConfigOpen, isShortLinkLoading: readonly(isShortLinkLoading), copiedUrl: readonly(copiedUrl),
     historyLimit, historyRecords, isHistoryEnabled, enableHistory,
     handleApiChange, handleRemoteChange, handleGetSubUrl, handleGetShortUrl, copyToClipboard,
     restoreHistory, removeHistoryRecord, clearHistory,
