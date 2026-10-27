@@ -1,0 +1,39 @@
+src/views/home/SubTable.vue
+  s_75a2be44bffe91::t_db9ab5894743e4 168,208-213
+  s_75a2be44bffe91::t_1bf9b793c47898 14,95,114
+  s_75a2be44bffe91::t_a8014d348e97c3 214
+src/components/converter/ConversionHistory.vue
+  s_75a2be44bffe91::t_b570327dfeca4f 339,341
+  s_75a2be44bffe91::t_cfbfb4a57f913a 12,126-129,191-198,204-211
+  s_4d042507580c1b::t_de8071f46b433e 230,348
+src/components/AppIcon.vue
+  s_75a2be44bffe91::t_9fd44b5a7b425c 2,8
+src/components/converter/ConversionResults.vue
+  s_75a2be44bffe91::t_37c8d2b75a09a2 5,11-14,27-37,46-56,71,73
+src/composables/useSubscriptionConverter.ts
+  s_75a2be44bffe91::t_3044fe5e822439 1,17-18,153-170,239,242,245-246,261,263,266,339
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "30183822acfb5c2f77e0f07fb217774536ef51ef",
+  "prompts": {},
+  "sessions": {
+    "s_4d042507580c1b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a17c21-60cc-7ce3-a0b4-412d774485a0",
+        "model": "unknown"
+      },
+      "human_author": "kortin.zhou <hi@kortin.cn>"
+    },
+    "s_75a2be44bffe91": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a17c1a-4f02-7e30-8465-a43fe984a4ef",
+        "model": "deepseek/deepseek-flash"
+      },
+      "human_author": "kortin.zhou <hi@kortin.cn>"
+    }
+  }
+}
