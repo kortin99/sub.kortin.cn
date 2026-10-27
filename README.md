@@ -28,7 +28,7 @@
 本项目是纯前端应用，本身不执行订阅转换：
 
 1. 浏览器根据用户输入在本地生成 Subconverter 请求链接。
-2. 订阅转换由配置的 `apiUrl` 后端完成。
+2. 订阅转换由当前选择的 Subconverter 后端完成；可以使用默认后端，也可以填写自定义 `apiUrl`。
 3. 生成短链接时，转换后的长链接会被 Base64 编码并提交给配置的短链接服务。
 
 请只使用你信任的后端和短链接服务。
@@ -151,8 +151,67 @@ docker run -d --name subweb --restart always \
 自行构建镜像：
 
 ```bash
-docker build --no-cache -t kortin99/sub.kortin.cn:latest .
+docker build --no-cache -f docker/Dockerfile -t kortin99/sub.kortin.cn:latest .
 ```
+
+### 一键部署（前端 + Subconverter + 短链）
+
+仓库提供独立的 `docker/compose.yaml`，会启动四个服务：
+
+- `web`：构建并托管前端，同时作为统一入口反向代理其他服务。
+- `subconverter`：使用 MetaCubeX 官方镜像。
+- `myurls`：使用 `stilleshan/myurls` 短链镜像，并将短链数据保存在 Redis 中。
+- `redis`：为 `myurls` 提供持久化存储。
+
+短链部分参考 [stilleshan/sub](https://github.com/stilleshan/dockerfiles/tree/main/sub) 的 Compose
+部署方式，底层项目为 [CareyWang/MyUrls](https://github.com/CareyWang/MyUrls)。本仓库没有直接使用
+`stilleshan/sub` 聚合镜像，因为它包含旧版前端，会覆盖当前仓库构建的前端。
+
+```bash
+cd docker
+cp .env.example .env
+docker compose up -d --build
+```
+
+默认访问 `http://localhost:18080`。如果通过域名或反向代理访问，必须把 `.env` 中的前端地址和
+短链地址改为浏览器实际访问的协议与域名，例如：
+
+```dotenv
+PUBLIC_PROTO=https
+PUBLIC_HOST=sub.example.com
+SHORT_PROTO=https
+SHORT_HOST=s.example.com
+```
+
+当前固定的 `stilleshan/myurls:2024-05-02` 镜像内置 365 天短链有效期。上游文档提到的
+`MYURLS_TTL` 没有被该镜像的启动脚本传入程序，因此修改这个环境变量不会生效。
+
+入口 Nginx 将 `/short` 和 `/<7位字母数字短码>` 代理给 MyUrls，并为 `/short` 返回 CORS 响应头。
+默认同源部署时无需额外反向代理；使用独立短链域名时，需要把两个域名都反代到 `web` 的 `80` 端口。
+同源部署时不要新增与“7 位字母数字”冲突的前端单层路由。
+
+查看状态和日志：
+
+```bash
+docker compose ps
+docker compose logs -f web myurls redis
+```
+
+停止服务：
+
+```bash
+docker compose down
+```
+
+同时删除 Redis 中的短链数据：
+
+```bash
+docker compose down -v
+```
+
+> `stilleshan/myurls` 会把长链接以明文保存在 Redis 中，并接受任意目标 URL。当前 Compose 只在入口
+> 层做了创建限流，没有目标域名白名单。若用于公开服务，应限制创建入口，或基于 MyUrls 源码增加
+> 域名白名单、鉴权和数据加密。
 
 ### docker 发布
 ```shell
@@ -170,6 +229,13 @@ docker rmi kortin99/sub.kortin.cn
 
 ```text
 .
+├── docker/
+│   ├── .env.example             # Compose 部署环境变量示例
+│   ├── nginx/                    # Compose 部署的 Nginx 配置模板
+│   ├── web/                      # 前端镜像与运行时配置脚本
+│   ├── Dockerfile                # 已发布的全能镜像
+│   ├── compose.yaml              # 前端 + Subconverter + 短链一键部署
+│   └── start.sh                  # 全能镜像启动脚本
 ├── docs/                         # README 截图
 ├── public/
 │   └── conf/config.js            # 站点配置
@@ -181,18 +247,16 @@ docker rmi kortin99/sub.kortin.cn
 │   ├── network/                  # HTTP 请求封装
 │   ├── router/                   # 路由配置
 │   └── views/                    # 页面
-├── Dockerfile
 ├── vite.config.ts
 └── package.json
 ```
 
 ## 安全提示
 
-- 普通订阅链接只在浏览器本地生成，不会由本项目主动上传。
-- 生成短链接时，长链接会提交到配置的短链接服务。
+- 生成订阅链接时，浏览器只在本地拼接请求地址，不会自动上传输入内容；使用生成的链接时，当前选择的 Subconverter 后端会收到其中的源订阅地址。项目支持默认后端和自定义后端，请只选择你信任的服务。
+- 生成短链接时，完整转换链接会经 Base64 编码后提交给目标短链接服务；Base64 不是加密。
 - 历史记录只保存在浏览器 `localStorage`，不会上传到服务器。记录可能包含订阅密钥，请避免在公用设备上启用，并及时清理。
 - “跳过证书验证”会降低连接安全性，仅在确认需要时开启。
-- 建议自建或使用可信的 Subconverter 后端。
 
 ## 许可
 

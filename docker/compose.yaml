@@ -1,0 +1,80 @@
+name: sub-kortin
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: docker/web/Dockerfile
+    image: sub-kortin-web:local
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-18080}:80"
+    environment:
+      API_URL: "${PUBLIC_PROTO:-http}://${PUBLIC_HOST:-localhost:18080}"
+      SHORT_URL: "${SHORT_PROTO:-http}://${SHORT_HOST:-localhost:18080}"
+      SITE_NAME: "${SITE_NAME:-kortin's 订阅转换}"
+      SUBCONVERTER_UPSTREAM: subconverter:25500
+      MYURLS_UPSTREAM: myurls:8080
+    depends_on:
+      subconverter:
+        condition: service_started
+      myurls:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/healthz | grep -q ok"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - backend
+
+  subconverter:
+    image: "${SUBCONVERTER_IMAGE:-metacubex/subconverter:latest}"
+    restart: unless-stopped
+    expose:
+      - "25500"
+    networks:
+      - backend
+
+  myurls:
+    image: "${MYURLS_IMAGE:-stilleshan/myurls:2024-05-02}"
+    restart: unless-stopped
+    environment:
+      MYURLS_DOMAIN: "${SHORT_HOST:-localhost:18080}"
+      MYURLS_PROTO: "${SHORT_PROTO:-http}"
+      MYURLS_REDIS_CONN: redis:6379
+    expose:
+      - "8080"
+    volumes:
+      - myurls-logs:/app/logs
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/ >/dev/null"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - backend
+
+  redis:
+    image: "${REDIS_IMAGE:-redis:7.4-alpine}"
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  myurls-logs:
+  redis-data:
