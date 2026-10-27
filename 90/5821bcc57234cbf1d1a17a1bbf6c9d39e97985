@@ -1,0 +1,48 @@
+docker/nginx/default.conf.template
+  s_2d98b285e2a2cb::t_d2fed857ac9569 1-63
+docker/web/Dockerfile
+  s_2d98b285e2a2cb::t_8f90e621dd7e22 1-22
+.dockerignore
+  s_2d98b285e2a2cb::t_e345e2fc251339 1-11
+docker/web/apply-config.sh
+  s_2d98b285e2a2cb::t_d2fed857ac9569 1-39
+.github/workflows/docker-build-release.yml
+  s_2d98b285e2a2cb::t_8f90e621dd7e22 25-26,48,74
+.gitignore
+  s_2d98b285e2a2cb::t_e345e2fc251339 8
+README.md
+  s_2d98b285e2a2cb::t_95c2581a4d5e67 176-177,182-183
+  s_2d98b285e2a2cb::t_bf9463ffe8872d 192
+  s_2d98b285e2a2cb::t_697aa8d0d2790f 163-164,180-181,206,212-214
+  s_2d98b285e2a2cb::t_8f90e621dd7e22 154,159,232,235-236
+  s_2d98b285e2a2cb::t_94290e79510ae1 234
+  s_2d98b285e2a2cb::t_06314708b17682 257
+  s_2d98b285e2a2cb::t_f0337c7828d75e 171,173,196-197,203,209,233,237-238
+  s_2d98b285e2a2cb::t_b985da24a2ae5f 161,185-187
+  s_2d98b285e2a2cb::t_e345e2fc251339 157-158,160,162,165,170,172,174-175,178-179,184,188,193-195,198-202,204-205,207-208,210-211,215
+  s_2d98b285e2a2cb::t_666af29ea243cd 166-169
+  s_2d98b285e2a2cb::t_311bdb01f6f64c 189-191
+  s_2d98b285e2a2cb::t_1299632b253c85 31,256
+docker/Dockerfile
+  s_2d98b285e2a2cb::t_f0337c7828d75e 1-21
+docker/compose.yaml
+  s_2d98b285e2a2cb::t_8f90e621dd7e22 1-80
+docker/.env.example
+  s_2d98b285e2a2cb::t_d2fed857ac9569 1-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "905821bcc57234cbf1d1a17a1bbf6c9d39e97985",
+  "prompts": {},
+  "sessions": {
+    "s_2d98b285e2a2cb": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a17d5c-a5b2-70a2-a2ab-6e34e4246e0d",
+        "model": "deepseek/deepseek-flash"
+      },
+      "human_author": "kortin.zhou <hi@kortin.cn>"
+    }
+  }
+}
