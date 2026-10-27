@@ -1,0 +1,43 @@
+rules/ACL4SSR_Custom.ini
+  s_2d98b285e2a2cb::t_38e08c7d65653b 8
+  s_2d98b285e2a2cb::t_501cccb37bdff2 1-7,9-16,18-24,26,29-51,54-63,65-80
+  s_2d98b285e2a2cb::t_51348dad03fb6b 17
+  s_2d98b285e2a2cb::t_743174bff2ca40 52
+  s_2d98b285e2a2cb::t_48a7d02db55eb7 25
+  s_2d98b285e2a2cb::t_cd268e834a440f 27-28
+  s_2d98b285e2a2cb::t_1f76414eb4b7ed 53
+  s_2d98b285e2a2cb::t_24e21b4fbea483 64
+public/conf/config.js
+  s_2d98b285e2a2cb::t_545798daa70b79 31,33-34
+  s_2d98b285e2a2cb::t_501cccb37bdff2 32
+README.md
+  s_2d98b285e2a2cb::t_501cccb37bdff2 103,134-136,294
+  s_2d98b285e2a2cb::t_51348dad03fb6b 117-120
+  s_2d98b285e2a2cb::t_545798daa70b79 98-102,104-106,109-110,112,116,121-133,140-149
+  s_2d98b285e2a2cb::t_47a22ea9f74622 107-108,111,113-115
+  s_2d98b285e2a2cb::t_c69d53c07b47f5 137-139
+rules/custom-proxy.list
+  s_2d98b285e2a2cb::t_501cccb37bdff2 1-5
+rules/custom-direct.list
+  s_2d98b285e2a2cb::t_501cccb37bdff2 1-5
+rules/custom-ai.list
+  s_2d98b285e2a2cb::t_47a22ea9f74622 1-4
+rules/custom-reject.list
+  s_2d98b285e2a2cb::t_501cccb37bdff2 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "2f3aef12e7f3d47c1e832a551e88f37eb40950d4",
+  "prompts": {},
+  "sessions": {
+    "s_2d98b285e2a2cb": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a17d5c-a5b2-70a2-a2ab-6e34e4246e0d",
+        "model": "deepseek/deepseek-flash"
+      },
+      "human_author": "kortin.zhou <hi@kortin.cn>"
+    }
+  }
+}
