@@ -1,6 +1,11 @@
 import { reactive, readonly, shallowRef } from 'vue'
 import type { SelectOption } from 'naive-ui'
 import { request } from '@/network'
+import type { ClientIconName } from '@/components/converter/clientIcons'
+import {
+  useConversionHistory,
+  type ConversionHistoryRecord,
+} from '@/composables/useConversionHistory'
 import { useFeedback } from '@/composables/useFeedback'
 import { getSubLink, regexCheck, type MoreConfig } from '@/views/home'
 
@@ -9,26 +14,34 @@ interface ShortLinkResponse {
   ShortUrl?: string
 }
 
+export interface TargetOption extends SelectOption {
+  icon: ClientIconName
+}
+
 export function useSubscriptionConverter() {
   const { showDialog, showNotification } = useFeedback()
+  const {
+    historyLimit, records: historyRecords, isEnabled: isHistoryEnabled, enableHistory,
+    upsertRecord, removeRecord, clearRecords,
+  } = useConversionHistory()
 
   const placeholder = '多订阅链接或节点请确保每行一条\n支持手动使用 "|" 分割多链接或节点'
-  const targetOptions: SelectOption[] = [
-    { value: 'clash', label: 'Clash' },
-    { value: 'clashr', label: 'ClashR' },
-    { value: 'v2ray', label: 'V2Ray' },
-    { value: 'quan', label: 'Quantumult' },
-    { value: 'quanx', label: 'Quantumult X' },
-    { value: 'surge&ver=2', label: 'Surge V2' },
-    { value: 'surge&ver=3', label: 'Surge V3' },
-    { value: 'surge&ver=4', label: 'Surge V4' },
-    { value: 'surfboard', label: 'Surfboard' },
-    { value: 'ss', label: 'SS (SIP002)' },
-    { value: 'sssub', label: 'SS Android' },
-    { value: 'ssd', label: 'SSD' },
-    { value: 'ssr', label: 'SSR' },
-    { value: 'loon', label: 'Loon' },
-    { value: 'singbox', label: 'Sing-box' },
+  const targetOptions: TargetOption[] = [
+    { value: 'clash', label: 'Clash', icon: 'clash' },
+    { value: 'clashr', label: 'ClashR', icon: 'clash' },
+    { value: 'v2ray', label: 'V2Ray', icon: 'v2ray' },
+    { value: 'quan', label: 'Quantumult', icon: 'quantumult' },
+    { value: 'quanx', label: 'Quantumult X', icon: 'quantumultx' },
+    { value: 'surge&ver=2', label: 'Surge V2', icon: 'surge' },
+    { value: 'surge&ver=3', label: 'Surge V3', icon: 'surge' },
+    { value: 'surge&ver=4', label: 'Surge V4', icon: 'surge' },
+    { value: 'surfboard', label: 'Surfboard', icon: 'surfboard' },
+    { value: 'ss', label: 'SS (SIP002)', icon: 'shadowsocks' },
+    { value: 'sssub', label: 'SS Android', icon: 'shadowsocks' },
+    { value: 'ssd', label: 'SSD', icon: 'shadowsocks' },
+    { value: 'ssr', label: 'SSR', icon: 'shadowrocket' },
+    { value: 'loon', label: 'Loon', icon: 'loon' },
+    { value: 'singbox', label: 'Sing-box', icon: 'singbox' },
   ]
 
   const moreConfigDefaults: MoreConfig = {
@@ -48,6 +61,45 @@ export function useSubscriptionConverter() {
     clashDoh: false,
     insert: false,
     customParams: [],
+  }
+
+  const createMoreConfig = (): MoreConfig => ({
+    ...moreConfigDefaults,
+    customParams: [],
+  })
+
+  const normalizeMoreConfig = (value: unknown): MoreConfig => {
+    const source = typeof value === 'object' && value !== null
+      ? value as Partial<MoreConfig>
+      : {}
+
+    return {
+      include: typeof source.include === 'string' ? source.include : '',
+      exclude: typeof source.exclude === 'string' ? source.exclude : '',
+      filename: typeof source.filename === 'string' ? source.filename : '',
+      region: typeof source.region === 'string' ? source.region : '',
+      emoji: typeof source.emoji === 'boolean' ? source.emoji : true,
+      udp: typeof source.udp === 'boolean' ? source.udp : true,
+      sort: typeof source.sort === 'boolean' ? source.sort : false,
+      scv: typeof source.scv === 'boolean' ? source.scv : false,
+      list: typeof source.list === 'boolean' ? source.list : false,
+      appendType: typeof source.appendType === 'boolean' ? source.appendType : false,
+      fdn: typeof source.fdn === 'boolean' ? source.fdn : false,
+      expand: typeof source.expand === 'boolean' ? source.expand : true,
+      surgeDoh: typeof source.surgeDoh === 'boolean' ? source.surgeDoh : false,
+      clashDoh: typeof source.clashDoh === 'boolean' ? source.clashDoh : false,
+      insert: typeof source.insert === 'boolean' ? source.insert : false,
+      customParams: Array.isArray(source.customParams)
+        ? source.customParams
+          .filter((param): param is { name: string; value: string } =>
+            typeof param === 'object'
+            && param !== null
+            && typeof param.name === 'string'
+            && typeof param.value === 'string'
+          )
+          .map((param) => ({ name: param.name, value: param.value }))
+        : [],
+    }
   }
 
   const regionOptions: SelectOption[] = [
@@ -91,7 +143,7 @@ export function useSubscriptionConverter() {
       subUrl: '',
       shortUrl: '',
     },
-    moreConfig: { ...moreConfigDefaults },
+    moreConfig: createMoreConfig(),
   })
 
   const isMoreConfigOpen = shallowRef(false)
@@ -107,6 +159,61 @@ export function useSubscriptionConverter() {
     state.remoteSelection = value
     state.isShowRemoteConfig = value === 'manual'
     state.remoteConfig = state.isShowRemoteConfig ? '' : value
+  }
+
+  const recordCurrentConversion = (shortLink = '') => {
+    upsertRecord({
+      source: state.urls.trim(),
+      target: state.target,
+      api: state.api,
+      remoteConfig: state.remoteConfig,
+      advancedOpen: isMoreConfigOpen.value,
+      moreConfig: normalizeMoreConfig(state.moreConfig),
+      subUrl: state.result.subUrl,
+      shortUrl: shortLink,
+    })
+  }
+
+  const restoreHistory = (record: ConversionHistoryRecord) => {
+    const hasTarget = targetOptions.some((option) => String(option.value) === record.target)
+    const hasRemoteConfig = remoteConfigOptions.some((option) => option.value === record.remoteConfig)
+
+    state.urls = record.source
+    state.target = hasTarget ? record.target : 'clash'
+    state.api = record.api
+    state.apiSelection = record.api === apiUrl ? apiUrl : 'manual'
+    state.isShowManualApiUrl = state.apiSelection === 'manual'
+    state.remoteConfig = record.remoteConfig
+    state.remoteSelection = record.remoteConfig === ''
+      ? ''
+      : hasRemoteConfig
+        ? record.remoteConfig
+        : 'manual'
+    state.isShowRemoteConfig = state.remoteSelection === 'manual'
+    state.result.subUrl = record.subUrl
+    state.result.shortUrl = record.shortUrl
+    state.moreConfig = normalizeMoreConfig(record.moreConfig)
+    isMoreConfigOpen.value = record.advancedOpen
+    showNotification('历史配置已载入，可以修改后重新生成')
+  }
+
+  const removeHistoryRecord = (id: string) => {
+    removeRecord(id)
+    showNotification('历史记录已删除')
+  }
+
+  const clearHistory = () => {
+    if (!historyRecords.value.length) return
+
+    showDialog(
+      'warning',
+      '清空历史记录',
+      '所有保存在当前浏览器本地的历史记录都会被删除，此操作无法撤销。',
+      () => {
+        clearRecords()
+        showNotification('历史记录已清空')
+      }
+    )
   }
 
   const copyToClipboard = async (url: string, title: string) => {
@@ -160,11 +267,13 @@ export function useSubscriptionConverter() {
       isMoreConfigOpen.value,
       state.moreConfig
     )
+    state.result.shortUrl = ''
     return true
   }
 
   const handleGetSubUrl = async () => {
     if (getConverter()) {
+      recordCurrentConversion()
       await copyToClipboard(state.result.subUrl, '订阅链接')
     }
   }
@@ -174,6 +283,7 @@ export function useSubscriptionConverter() {
       return
     }
 
+    recordCurrentConversion()
     isShortLinkLoading.value = true
 
     try {
@@ -187,6 +297,7 @@ export function useSubscriptionConverter() {
       const result = response.data as ShortLinkResponse
       if (result.Code === 1 && result.ShortUrl) {
         state.result.shortUrl = result.ShortUrl
+        recordCurrentConversion(state.result.shortUrl)
         await copyToClipboard(state.result.shortUrl, '短链接')
       } else {
         showDialog('error', '生成失败', '短链接服务返回了无效结果。')
@@ -201,6 +312,8 @@ export function useSubscriptionConverter() {
   return {
     state, targetOptions, regionOptions, apiOptions, remoteOptions, placeholder,
     isMoreConfigOpen, isShortLinkLoading: readonly(isShortLinkLoading),
+    historyLimit, historyRecords, isHistoryEnabled, enableHistory,
     handleApiChange, handleRemoteChange, handleGetSubUrl, handleGetShortUrl, copyToClipboard,
+    restoreHistory, removeHistoryRecord, clearHistory,
   }
 }
