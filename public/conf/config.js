@@ -28,5 +28,9 @@ window.config = {
       value: 'https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Full.ini',
       text: 'ACL4SSR Online Full',
     },
+    {
+      value: 'https://raw.githubusercontent.com/kortin99/sub.kortin.cn/main/rules/ACL4SSR_Custom.ini',
+      text: 'ACL4SSR Full + 自定义规则',
+    },
   ],
 };

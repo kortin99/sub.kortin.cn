@@ -1,0 +1,4 @@
+# Custom AI routing rules. Applied after custom-proxy.list.
+# Add Clash-format domain rules here when needed.
+# DOMAIN,example.com
+# DOMAIN-SUFFIX,example.com

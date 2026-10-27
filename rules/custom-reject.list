@@ -1,0 +1,5 @@
+# Custom REJECT rules. Highest priority.
+# Syntax examples:
+# DOMAIN,ads.example.com
+# DOMAIN-SUFFIX,ads.example.com
+# DOMAIN-KEYWORD,adservice

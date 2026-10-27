@@ -1,0 +1,5 @@
+# Custom PROXY rules. Applied after custom-direct.list.
+# Syntax examples:
+# DOMAIN,example.com
+# DOMAIN-SUFFIX,example.com
+# IP-CIDR,198.51.100.0/24,no-resolve

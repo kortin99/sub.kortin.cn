@@ -1,0 +1,5 @@
+# Custom DIRECT rules. Applied after custom-reject.list.
+# Syntax examples:
+# DOMAIN,example.com
+# DOMAIN-SUFFIX,example.com
+# IP-CIDR,192.0.2.0/24,no-resolve

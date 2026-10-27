@@ -95,6 +95,58 @@ window.config = {
 
 修改配置后刷新页面即可生效。
 
+### 自定义 ACL4SSR 规则
+
+仓库提供一份基于 `ACL4SSR_Online_Full.ini` 的自定义远程配置：
+
+```text
+rules/
+├── ACL4SSR_Custom.ini     # 完整远程配置
+├── custom-reject.list     # 自定义拦截规则
+├── custom-direct.list     # 自定义直连规则
+├── custom-proxy.list      # 自定义代理规则
+└── custom-ai.list         # 自定义 AI 分流规则
+```
+
+规则优先级为：`custom-reject` → `custom-direct` → `custom-proxy` → `custom-ai` → ACL4SSR 原始规则。
+同一个域名不要同时写入多个清单，否则会按上述顺序命中。
+
+`custom-ai.list` 当前是占位清单。它只决定哪些域名进入 `🤖 AI平台`，不会改变该策略组
+可选的节点；节点筛选由 `ACL4SSR_Custom.ini` 中 `custom_proxy_group` 的关键词决定。
+
+默认的 `🛑 广告拦截` 聚合了 `custom-reject.list` 和 AWAvenue Ads Rule 的纯广告规则，
+不再叠加 ACL4SSR `BanAD.list`，避免重复和扩大误杀。`🍃 应用净化` 继续使用
+ACL4SSR `BanProgramAD.list`，因为它可能影响 App 的正常功能，需要保留独立开关。
+
+规则清单使用 Clash 规则格式，不需要在行首写策略组，例如：
+
+```text
+DOMAIN,example.com
+DOMAIN-SUFFIX,example.com
+DOMAIN-KEYWORD,example
+IP-CIDR,192.0.2.0/24,no-resolve
+```
+
+修改 `.list` 后提交并推送即可。首页的 `ACL4SSR Full + 自定义规则` 预设和
+`ACL4SSR_Custom.ini` 都会使用 GitHub raw 地址，Subconverter 后端会直接拉取这些文件，
+不需要重新构建前端。
+
+`rules/` 不在 Vite 的 `public/` 目录中，因此不会进入前端构建产物，只通过 GitHub raw
+提供给 Subconverter。如果需要额外由站点 `/rules` 提供，需要在 Nginx 或镜像构建时单独复制。
+
+自定义清单在 INI 中设置了 300 秒缓存周期。Subconverter 对外部配置本身还有缓存，
+更新后如果暂时没有生效，可以等待几分钟、刷新订阅，或重启后端。客户端也可能缓存订阅内容。
+
+使用 GitHub raw 地址需要同时满足：
+
+- 仓库公开，分支和路径与配置中的 URL 一致。
+- 当前 Subconverter 后端能够访问 `raw.githubusercontent.com`。
+- 不能使用 GitHub 网页的 `blob` 地址，必须使用原始文件地址。
+
+如果后端访问 GitHub 不稳定，可以将这些文件改为通过 `https://sub.kortin.cn/rules/...`
+提供，并同步修改 `config.js` 和 `ACL4SSR_Custom.ini` 中的地址。使用 `main` 分支时，
+每次推送都会影响后续生成的订阅；需要可复现配置时应改用 tag 或 commit URL。
+
 ### 短链接接口
 
 前端会向 `${shortUrl}/short` 发起 `POST` 请求：
@@ -239,6 +291,7 @@ docker rmi kortin99/sub.kortin.cn
 ├── docs/                         # README 截图
 ├── public/
 │   └── conf/config.js            # 站点配置
+├── rules/                        # 自定义 ACL4SSR 配置与规则清单
 ├── src/
 │   ├── assets/                   # 全局样式
 │   ├── components/               # 通用组件与业务组件
