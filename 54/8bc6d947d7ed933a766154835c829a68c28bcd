@@ -1,0 +1,134 @@
+src/layouts/main/footer/FooterBar.vue
+  s_75a2be44bffe91::t_fa634143ce1951 1-4,7-8,14-16
+  s_75a2be44bffe91::t_fa6bfe3f94c77d 6,12,17
+  s_75a2be44bffe91::t_e06cdf5917d62d 13
+src/layouts/main/MainLayout.vue
+  s_75a2be44bffe91::t_fa634143ce1951 10,12,20-22,41,53
+  s_75a2be44bffe91::t_c0c43381a3a85a 25-33,42-43,46,50
+  s_75a2be44bffe91::t_e06cdf5917d62d 52
+  s_75a2be44bffe91::t_75149a54c387c6 9
+  s_75a2be44bffe91::t_fa6bfe3f94c77d 8,19,24,34-36,38-40
+  s_75a2be44bffe91::t_c8f4451eb23b84 1
+  s_75a2be44bffe91::t_b2375c39999c8a 2-3,6,11,13-14,18,23,51
+  s_75a2be44bffe91::t_e22322a5173fe6 4,37,44-45,47-49
+  s_75a2be44bffe91::t_6ec3c765772c9b 5
+src/layouts/main/navbar/NavMenu.vue
+  s_75a2be44bffe91::t_b2375c39999c8a 1,8-9
+  s_75a2be44bffe91::t_fa634143ce1951 2-7,11-23,27-35
+  s_75a2be44bffe91::t_fa6bfe3f94c77d 26,36
+src/App.vue
+  s_75a2be44bffe91::t_0f6f96b1e583cb 2,4-5,7-8,24,61
+  s_75a2be44bffe91::t_e06cdf5917d62d 9-11,13-20,26-32,37-42,50,52-56,58,60
+  s_75a2be44bffe91::t_5ef6b7ee51bdf3 1
+  s_75a2be44bffe91::t_c0c43381a3a85a 12
+  s_75a2be44bffe91::t_fa634143ce1951 3,21-23,47-49,51,57,64-73
+  s_75a2be44bffe91::t_fa6bfe3f94c77d 25,33-36,43-46,59,76
+  s_75a2be44bffe91::t_aa2497e3c9c27e 74
+src/views/home/HomeView.vue
+  s_75a2be44bffe91::t_e06cdf5917d62d 22-24,57
+  s_75a2be44bffe91::t_ae10331c16d552 31,34,39-41
+  s_75a2be44bffe91::t_97a30b572a0893 26
+  s_75a2be44bffe91::t_1bc54e1ad877b0 29,32-33,35-38
+  s_75a2be44bffe91::t_be70cbda51b8aa 1-2,4-5,7,16,27
+  s_75a2be44bffe91::t_fa634143ce1951 3,8-15,20-21,25,28,30,42-56
+src/main.ts
+  s_75a2be44bffe91::t_5d66c917f5c187 1,4
+  s_75a2be44bffe91::t_350533290d5ea2 2-3
+  s_75a2be44bffe91::t_0f6f96b1e583cb 5
+src/network/index.ts
+  s_75a2be44bffe91::t_2afb40efa54d41 1-9
+src/assets/app.css
+  s_75a2be44bffe91::t_1bc54e1ad877b0 23-24
+  s_75a2be44bffe91::t_4e994b4d42d23f 21-22,25
+  s_75a2be44bffe91::t_fa634143ce1951 2,13-20,27-39
+  s_75a2be44bffe91::t_c0c43381a3a85a 4
+  s_75a2be44bffe91::t_e06cdf5917d62d 3,8-12,26
+  s_75a2be44bffe91::t_fa6bfe3f94c77d 1,5-7,40
+src/composables/useSubscriptionConverter.ts
+  s_75a2be44bffe91::t_41b51370eaa995 37-38,44-50,53-62,202
+  s_75a2be44bffe91::t_f6a0a7a381b9ab 156
+  s_75a2be44bffe91::t_162b5990ece063 1-36,39-43,51-52,63-155,157-201,203-206
+src/views/home/SubTable.vue
+  s_75a2be44bffe91::t_1ed183dfba3e86 17,30,36,39,42,45,48,53
+  s_75a2be44bffe91::t_fa634143ce1951 2-8,10-12,16,18-19,21-29,31-33,35,41,47,49-52,56,61-64,66-77,79-80
+  s_75a2be44bffe91::t_e06cdf5917d62d 65
+  s_75a2be44bffe91::t_4d3fb245ce8aa7 1
+  s_75a2be44bffe91::t_f1583a5debc0ee 14
+  s_75a2be44bffe91::t_c5c30745bf72c1 9,55
+  s_75a2be44bffe91::t_220037ea3c2f26 34,37-38,40,43-44,46
+  s_75a2be44bffe91::t_4e2503bc3f080e 57
+  s_75a2be44bffe91::t_bb6c5c6ca5858d 20
+  s_75a2be44bffe91::t_e958d655da322e 13
+src/composables/useNavbar.ts
+  s_75a2be44bffe91::t_200be8b39e36b6 1,3-4,24-25
+  s_75a2be44bffe91::t_0fecafd1af3d6e 2,5-23,26-31
+src/layouts/main/navbar/AppBrand.vue
+  s_75a2be44bffe91::t_fa6bfe3f94c77d 16
+  s_75a2be44bffe91::t_e06cdf5917d62d 21,23
+  s_75a2be44bffe91::t_b2375c39999c8a 1,4-5,13,17,29
+  s_75a2be44bffe91::t_fa634143ce1951 2-3,7-10,14-15,18-20,22,24-28
+src/components/converter/ConversionResults.vue
+  s_75a2be44bffe91::t_49a9f57c349e79 1-56
+src/composables/useFeedback.ts
+  s_75a2be44bffe91::t_0f6f96b1e583cb 1-36
+src/components/backgrounds/PatternBackground.vue
+  s_75a2be44bffe91::t_75f7012309f072 55
+  s_75a2be44bffe91::t_e22322a5173fe6 1-54,56-121
+tsconfig.node.json
+  s_75a2be44bffe91::t_9da25a686be4c7 1-10
+vite.config.ts
+  s_75a2be44bffe91::t_9ebd856470d3a1 1-2,4-5,7-8,10-19
+  s_75a2be44bffe91::t_350533290d5ea2 3,9
+  s_75a2be44bffe91::t_a886bb62e75425 6
+tsconfig.json
+  s_75a2be44bffe91::t_597e0f02c64b3d 1-25,27-31
+  s_75a2be44bffe91::t_350533290d5ea2 26
+src/components/AppIcon.vue
+  s_75a2be44bffe91::t_49a9f57c349e79 1-23
+package.json
+  s_75a2be44bffe91::t_2f0ce8a1bba8cf 5,7-10,17,22-24
+  s_75a2be44bffe91::t_547abc41b76226 25
+  s_75a2be44bffe91::t_0f6f96b1e583cb 14,16,21,26-27
+  s_75a2be44bffe91::t_66c759e50d277a 20
+src/views/home/index.ts
+  s_75a2be44bffe91::t_fd3901a6242b94 1-5,9-10,16-31,44-45,52-54,64-89
+  s_75a2be44bffe91::t_41b51370eaa995 42
+  s_75a2be44bffe91::t_f031ebbdcd627d 6-8,11-15,32-41,43,46-51,55-63,90-100
+src/router/index.ts
+  s_75a2be44bffe91::t_1f37fa53b700b3 1-23
+src/vite-env.d.ts
+  s_75a2be44bffe91::t_79e506878e16e6 1-24
+src/components/converter/AdvancedOptions.vue
+  s_75a2be44bffe91::t_1bc54e1ad877b0 121,124-125,127-128
+  s_75a2be44bffe91::t_a78afbdfa15894 1,4-6,8-56,60-73,83-85,95-117,131,133-144
+  s_75a2be44bffe91::t_c5c30745bf72c1 2-3,7,57-59
+  s_75a2be44bffe91::t_e22322a5173fe6 74-82,86-94,132
+  s_75a2be44bffe91::t_ae10331c16d552 118-120,122-123,126,129-130
+src/layouts/main/navbar/NavBar.vue
+  s_75a2be44bffe91::t_fa6bfe3f94c77d 9-10,12,15,18-19,24,41
+  s_75a2be44bffe91::t_b2375c39999c8a 1-5
+  s_75a2be44bffe91::t_1bc54e1ad877b0 26,29-30,32-34,36
+  s_75a2be44bffe91::t_fa634143ce1951 7-8,16-17,20-23,25,27,39-40
+  s_75a2be44bffe91::t_ae10331c16d552 28,31,35,37-38
+index.html
+  s_75a2be44bffe91::t_993c61bb38e721 5-6,8,13
+  s_75a2be44bffe91::t_6dafb5d42345f6 1-4,7,9-12,14-18
+pnpm-lock.yaml
+  s_75a2be44bffe91::t_89a3090461381c 1-2256
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "548bc6d947d7ed933a766154835c829a68c28bcd",
+  "prompts": {},
+  "sessions": {
+    "s_75a2be44bffe91": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a17c1a-4f02-7e30-8465-a43fe984a4ef",
+        "model": "deepseek/deepseek-flash"
+      },
+      "human_author": "kortin.zhou <hi@kortin.cn>"
+    }
+  }
+}
