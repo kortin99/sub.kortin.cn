@@ -6,7 +6,7 @@ import PatternBackground from '@/components/backgrounds/PatternBackground.vue'
 
 <template>
   <div class="app-shell">
-    <PatternBackground class="page-pattern" :animate="true" direction="bottom-right" variant="big-dot" size="lg" mask="ellipse" :speed="1000" aria-hidden="true" />
+    <PatternBackground class="page-pattern" :animate="true" direction="top" variant="big-dot" size="xl" mask="ellipse" :speed="1000" aria-hidden="true" />
     <a class="skip-link" href="#converter">跳到订阅转换</a>
     <NavBar />
     <RouterView />

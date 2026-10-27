@@ -52,7 +52,7 @@ const rootClasses = computed(() => [
 <style scoped>
 /* Adapted from Inspira UI's PatternBackground without adding its UI dependencies. */
 .pattern-background {
-  --pattern-color: rgba(183, 201, 223, 0.24);
+  --pattern-color: rgba(213, 201, 223, 0.64);
   --pattern-dot-size: 2px;
   --pattern-size: 24px;
   --pattern-start: 0 0;
